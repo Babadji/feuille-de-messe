@@ -1,0 +1,353 @@
+/*
+ * Feuille de messe — habillage public.
+ *
+ * Charte Paroisse Carlo Acutis : or #FABC1E, rouge #EA0026, bleu #1A76F3,
+ * bleu nuit #02235F, fond pâle #F2F5FC. Titres en Delicious Handrawn,
+ * textes en Lato. Le rouge est réservé au don : il ne sert pas ici.
+ *
+ * Les deux polices sont déjà chargées par le site : on ne les recharge pas,
+ * on se contente de les appeler, avec une pile de repli complète.
+ *
+ * Tout est confiné sous .fdm pour ne rien déborder sur le reste du thème.
+ */
+
+.fdm {
+	--fdm-nuit: #02235F;
+	--fdm-doux: #6A7BA2;
+	--fdm-fond: #FFFFFF;
+	--fdm-fond-2: #F2F5FC;
+	--fdm-bleu: #1A76F3;
+	--fdm-or: #FABC1E;
+	--fdm-trait: #D8E0F2;
+	--fdm-titre: "Delicious Handrawn", "Segoe Script", "Comic Sans MS", cursive;
+	--fdm-texte: Lato, ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+	color: var(--fdm-nuit);
+	font-family: var(--fdm-texte);
+	font-size: 16px;
+	line-height: 1.62;
+}
+
+.fdm *,
+.fdm *::before,
+.fdm *::after {
+	box-sizing: border-box;
+}
+
+.fdm-page {
+	max-width: 34rem;
+	margin-inline: auto;
+	padding-inline: 20px;
+	padding-block: 0 3rem;
+}
+
+/* Surtitre : Lato 700, majuscules, interlettrage 0.64px — comme le site. */
+.fdm-surtitre {
+	font-weight: 700;
+	font-size: 0.8rem;
+	letter-spacing: 0.64px;
+	text-transform: uppercase;
+	margin: 0;
+}
+
+/* --- En-tête --- */
+.fdm-tete {
+	padding-block: 2rem 1.1rem;
+	text-align: center;
+}
+.fdm-tete .fdm-surtitre {
+	color: var(--fdm-bleu);
+	margin-bottom: 0.75rem;
+}
+.fdm-tete h1 {
+	font-family: var(--fdm-titre);
+	font-weight: 400;
+	color: var(--fdm-nuit);
+	font-size: clamp(2.1rem, 9vw, 2.75rem);
+	line-height: 1.1;
+	letter-spacing: -0.03em;
+	margin: 0;
+	text-wrap: balance;
+}
+.fdm-temps {
+	color: var(--fdm-doux);
+	margin: 0.55rem 0 0;
+	font-size: 0.95rem;
+}
+
+/* --- Barre de repères collante --- */
+.fdm-barre {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	margin-inline: -20px;
+	background: rgba(255, 255, 255, 0.93);
+	backdrop-filter: blur(8px);
+	border-block: 1px solid var(--fdm-trait);
+}
+.fdm-pistes {
+	display: flex;
+	gap: 0.35rem;
+	overflow-x: auto;
+	scroll-snap-type: x proximity;
+	padding: 0.5rem 20px;
+	scrollbar-width: none;
+}
+.fdm-pistes::-webkit-scrollbar {
+	display: none;
+}
+.fdm-chip {
+	flex: 0 0 auto;
+	scroll-snap-align: center;
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 0.7rem;
+	letter-spacing: 0.64px;
+	text-transform: uppercase;
+	color: var(--fdm-doux);
+	background: var(--fdm-fond-2);
+	border-radius: 4px;
+	padding: 0.35rem 0.6rem;
+	white-space: nowrap;
+}
+.fdm-chip[aria-current="true"] {
+	color: #fff;
+	background: var(--fdm-bleu);
+}
+.fdm-chip:focus-visible {
+	outline: 2px solid var(--fdm-bleu);
+	outline-offset: 2px;
+}
+
+/* --- Blocs de la semaine --- */
+.fdm-bloc {
+	margin-block: 1.9rem;
+}
+.fdm-bloc > h2 {
+	font-family: var(--fdm-titre);
+	font-weight: 400;
+	color: var(--fdm-nuit);
+	font-size: 1.5rem;
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	margin: 0 0 0.8rem;
+	padding-bottom: 0.4rem;
+	border-bottom: 2px solid var(--fdm-or);
+}
+.fdm-intentions {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 0.3rem;
+}
+.fdm-intentions li {
+	padding-left: 1.15rem;
+	position: relative;
+	font-size: 0.97rem;
+}
+.fdm-intentions li::before {
+	content: "\2020";
+	position: absolute;
+	left: 0;
+	color: var(--fdm-bleu);
+	font-weight: 700;
+}
+.fdm-fetes {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: 0.5rem;
+}
+.fdm-fetes li {
+	font-size: 0.94rem;
+	padding-left: 1.15rem;
+	position: relative;
+}
+.fdm-fetes li::before {
+	content: "";
+	position: absolute;
+	left: 0.3rem;
+	top: 0.65em;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: var(--fdm-or);
+}
+
+.fdm-semaine {
+	display: grid;
+}
+.fdm-jour {
+	padding: 0.75rem 0.9rem;
+	border-radius: 4px;
+}
+.fdm-jour:nth-child(odd) {
+	background: var(--fdm-fond-2);
+}
+.fdm-jour h3 {
+	margin: 0 0 0.35rem;
+	font-family: var(--fdm-texte);
+	font-weight: 900;
+	font-size: 0.8rem;
+	letter-spacing: 0.64px;
+	text-transform: uppercase;
+	color: var(--fdm-nuit);
+}
+.fdm-jour ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: 0.28rem;
+}
+.fdm-jour li {
+	display: grid;
+	grid-template-columns: 4.3rem 1fr;
+	gap: 0.55rem;
+	align-items: baseline;
+}
+.fdm-h {
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	font-size: 0.9rem;
+	white-space: nowrap;
+	position: relative;
+	padding-left: 0.55rem;
+}
+.fdm-h:not(:empty)::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.15em;
+	width: 3px;
+	height: 1em;
+	background: var(--fdm-or);
+	border-radius: 2px;
+}
+.fdm-q {
+	font-size: 0.94rem;
+}
+
+/* --- Déroulé de la messe --- */
+.fdm-moment {
+	margin-block: 1.75rem;
+	scroll-margin-top: 3.6rem;
+}
+.fdm-moment h3 {
+	font-family: var(--fdm-titre);
+	font-weight: 400;
+	font-size: 1.3rem;
+	line-height: 1.2;
+	letter-spacing: 0.2px;
+	color: var(--fdm-nuit);
+	margin: 0 0 0.5rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.5rem;
+}
+.fdm-moment h3::after {
+	content: "";
+	flex: 1 1 1.5rem;
+	height: 1px;
+	background: var(--fdm-trait);
+}
+.fdm-rubrique {
+	order: 3;
+	font-family: var(--fdm-texte);
+	font-style: italic;
+	font-weight: 400;
+	font-size: 0.82rem;
+	color: var(--fdm-doux);
+	letter-spacing: 0;
+}
+.fdm-moment p {
+	margin: 0 0 0.5rem;
+}
+.fdm-refrain {
+	padding: 0.5rem 0.8rem;
+	border-left: 3px solid var(--fdm-bleu);
+	background: var(--fdm-fond-2);
+	font-weight: 700;
+	border-radius: 0 4px 4px 0;
+}
+.fdm-marque {
+	display: block;
+	font-size: 0.68rem;
+	font-weight: 900;
+	letter-spacing: 0.64px;
+	text-transform: uppercase;
+	color: var(--fdm-bleu);
+}
+.fdm-couplet {
+	padding-left: 1.5rem;
+	position: relative;
+}
+.fdm-num {
+	position: absolute;
+	left: 0;
+	top: 0;
+	color: var(--fdm-or);
+	font-weight: 900;
+	font-size: 0.95rem;
+}
+.fdm-dit {
+	padding-left: 0.8rem;
+	border-left: 3px solid var(--fdm-trait);
+}
+.fdm-qui {
+	display: block;
+	font-size: 0.68rem;
+	font-weight: 900;
+	letter-spacing: 0.64px;
+	text-transform: uppercase;
+	color: var(--fdm-doux);
+}
+.fdm-dit-tous {
+	border-left-color: var(--fdm-or);
+	font-weight: 700;
+}
+
+/* --- Encart et pied --- */
+.fdm-encart {
+	margin-top: 2.25rem;
+	padding: 1.1rem 1.2rem;
+	background: var(--fdm-fond-2);
+	border-left: 3px solid var(--fdm-or);
+	border-radius: 0 4px 4px 0;
+	font-size: 0.95rem;
+}
+.fdm-encart .fdm-surtitre {
+	color: var(--fdm-nuit);
+	margin-bottom: 0.45rem;
+}
+.fdm-pied {
+	margin-top: 2.25rem;
+	padding-top: 1.3rem;
+	border-top: 1px solid var(--fdm-trait);
+}
+.fdm-telecharger {
+	display: inline-block;
+	background: var(--fdm-bleu);
+	color: #fff;
+	font-weight: 700;
+	font-size: 0.8rem;
+	letter-spacing: 0.64px;
+	text-transform: uppercase;
+	text-decoration: none;
+	padding: 0.9rem 1.5rem;
+	border-radius: 4px;
+}
+.fdm-telecharger:hover,
+.fdm-telecharger:focus {
+	background: var(--fdm-nuit);
+	color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.fdm-chip {
+		scroll-behavior: auto;
+	}
+}
