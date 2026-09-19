@@ -106,6 +106,13 @@ class FDM_Front {
 	 * [feuille_bouton] — lien vers la feuille du moment, avec sa date.
 	 * Ne renvoie rien s'il n'y a pas de feuille : mieux vaut pas de bouton
 	 * qu'un bouton menant à une page vide.
+	 *
+	 * Attributs :
+	 *   style   « bouton » (défaut) : pavé bleu, pour un emplacement autonome.
+	 *           « lien » : rien d'imposé, tout est hérité du conteneur —
+	 *           police, taille, couleur. C'est ce qu'il faut dans la tétière,
+	 *           où le lien doit se fondre parmi « Evangile du jour » et « FIP ».
+	 *   libelle pour remplacer « Feuille du 20 septembre ».
 	 */
 	public static function shortcode( $atts ) {
 		$post = FDM_Cpt::courante();
@@ -113,10 +120,14 @@ class FDM_Front {
 			return '';
 		}
 		$atts = shortcode_atts(
-			array( 'libelle' => '' ),
+			array(
+				'libelle' => '',
+				'style'   => 'bouton',
+			),
 			$atts,
 			'feuille_bouton'
 		);
+		$classe = ( 'lien' === $atts['style'] ) ? 'fdm-lien' : 'fdm-bouton';
 
 		$date    = get_post_meta( $post->ID, FDM_Cpt::META_DATE, true );
 		$libelle = $atts['libelle'];
@@ -127,7 +138,7 @@ class FDM_Front {
 				: __( 'Feuille de messe', 'feuille-de-messe' );
 		}
 
-		return '<a class="fdm-bouton" href="' . esc_url( get_permalink( $post ) ) . '">'
+		return '<a class="' . esc_attr( $classe ) . '" href="' . esc_url( get_permalink( $post ) ) . '">'
 			. esc_html( $libelle ) . '</a>' . self::style_bouton();
 	}
 
@@ -204,6 +215,13 @@ class FDM_Front {
 			. 'font-weight:700;font-size:.8rem;letter-spacing:.64px;text-transform:uppercase;text-decoration:none;'
 			. 'padding:.85rem 1.4rem;border-radius:4px;line-height:1.2}'
 			. '.fdm-bouton.fdm-bouton:hover,.fdm-bouton.fdm-bouton:focus{background:#02235F;color:#fff}'
+			// Variante « lien » : tout est hérité du conteneur Elementor, pour
+			// se fondre parmi les autres éléments de la tétière. Les selecteurs
+			// sont doubles pour repasser devant « .elementor-kit-N a ».
+			. '.fdm-lien.fdm-lien{font:inherit;font-weight:600;line-height:1;color:inherit;'
+			. 'text-decoration:none;background:none;border:0;padding:0;margin:0;'
+			. 'display:inline-flex;align-items:center;vertical-align:middle}'
+			. '.fdm-lien.fdm-lien:hover,.fdm-lien.fdm-lien:focus{color:inherit;opacity:.8}'
 			. '.fdm-flottant.fdm-flottant{position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;display:flex;'
 			. 'align-items:baseline;justify-content:center;gap:.5rem;background:#1A76F3;color:#fff;'
 			. 'font-family:Lato,system-ui,sans-serif;text-decoration:none;padding:1rem;border-radius:4px;'
