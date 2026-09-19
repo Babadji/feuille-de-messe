@@ -81,23 +81,37 @@
 		return false;
 	}
 
+	function couvert( x, y ) {
+		var el = document.elementFromPoint( x, y );
+		return !! ( el && el.closest( ENTETE ) && estFixe( el ) );
+	}
+
 	function hauteurEntete() {
 		var cx = Math.round( window.innerWidth / 2 );
 		var bas = 0;
-		// Pas de 1 px : un pas plus large sous-estime la hauteur d'autant, et
-		// laisse le haut de la feuille passer sous le menu.
-		for ( var y = 1; y <= 400; y += 1 ) {
-			var el = document.elementFromPoint( cx, y );
-			if ( el && el.closest( ENTETE ) && estFixe( el ) ) {
+		var y;
+
+		// Balayage grossier, puis affinage au pixel : la mesure est rejouée
+		// plusieurs fois, autant qu'elle reste bon marché.
+		for ( y = 1; y <= 400; y += 8 ) {
+			if ( couvert( cx, y ) ) {
 				bas = y;
 			}
 		}
+		if ( ! bas ) {
+			return 0;
+		}
+		for ( y = bas + 1; y <= bas + 8; y += 1 ) {
+			if ( couvert( cx, y ) ) {
+				bas = y;
+			}
+		}
+
+		// La barre d'administration est déjà compensée par la marge que
+		// WordPress pose sur <html> : la compter deux fois décalerait tout.
 		var barre = document.getElementById( 'wpadminbar' );
 		var admin = barre ? barre.getBoundingClientRect().height : 0;
-		// « bas » est le dernier pixel recouvert ; la hauteur occupée vaut donc
-		// un pixel de plus. Sans ce +1, la feuille remonte d'un pixel sous le
-		// menu — invisible à l'oeil, mais autant être juste.
-		return bas ? Math.max( 0, bas + 1 - admin ) : 0;
+		return Math.max( 0, bas + 1 - admin );
 	}
 
 	var dernier = null;
@@ -113,16 +127,24 @@
 		}
 	}
 
-	// Sur ordinateur, l'en-tête Elementor ne passe en position fixed qu'une
-	// fois son propre script exécuté : une mesure au chargement tombe trop tôt
-	// et renvoie zéro. Sur téléphone il est fixe dès la feuille de style, d'où
-	// un décalage correct d'un côté et absent de l'autre. On repasse donc
-	// plusieurs fois, puis on s'arrête — la valeur ne change plus ensuite.
-	appliquer();
+	// L'en-tête Elementor ne passe en position fixed qu'une fois son propre
+	// script exécuté. Une mesure au chargement tombe donc trop tôt et ne
+	// trouve rien à mesurer — c'est ce qui laissait le titre passer sous le
+	// menu, sur téléphone comme sur ordinateur. On insiste jusqu'à obtenir
+	// une hauteur, puis on s'arrête. Si l'en-tête n'est pas fixe du tout, la
+	// mesure vaut zéro à bon droit et on cesse au bout de trois secondes.
+	var essais = 0;
+
+	function insister() {
+		appliquer();
+		essais += 1;
+		if ( ! dernier && essais < 12 ) {
+			setTimeout( insister, 250 );
+		}
+	}
+
+	insister();
 	window.addEventListener( 'load', appliquer );
-	[ 100, 400, 1000, 2000 ].forEach( function ( delai ) {
-		setTimeout( appliquer, delai );
-	} );
 
 	// Les titres manuscrits peuvent changer la hauteur de l'en-tête au moment
 	// où la police arrive.
