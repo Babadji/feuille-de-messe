@@ -112,6 +112,8 @@ class FDM_Front {
 	 *           « lien » : rien d'imposé, tout est hérité du conteneur —
 	 *           police, taille, couleur. C'est ce qu'il faut dans la tétière,
 	 *           où le lien doit se fondre parmi « Evangile du jour » et « FIP ».
+	 *   classe  classe CSS supplémentaire, pour rattacher le lien à un style
+	 *           déjà défini sur le site plutôt que d'en écrire un nouveau.
 	 *   libelle pour remplacer « Feuille du 20 septembre ».
 	 */
 	public static function shortcode( $atts ) {
@@ -123,11 +125,15 @@ class FDM_Front {
 			array(
 				'libelle' => '',
 				'style'   => 'bouton',
+				'classe'  => '',
 			),
 			$atts,
 			'feuille_bouton'
 		);
 		$classe = ( 'lien' === $atts['style'] ) ? 'fdm-lien' : 'fdm-bouton';
+		if ( '' !== $atts['classe'] ) {
+			$classe .= ' ' . $atts['classe'];
+		}
 
 		$date    = get_post_meta( $post->ID, FDM_Cpt::META_DATE, true );
 		$libelle = $atts['libelle'];
@@ -218,10 +224,14 @@ class FDM_Front {
 			// Variante « lien » : tout est hérité du conteneur Elementor, pour
 			// se fondre parmi les autres éléments de la tétière. Les selecteurs
 			// sont doubles pour repasser devant « .elementor-kit-N a ».
-			. '.fdm-lien.fdm-lien{font:inherit;font-weight:600;line-height:1;color:inherit;'
-			. 'text-decoration:none;background:none;border:0;padding:0;margin:0;'
-			. 'display:inline-flex;align-items:center;vertical-align:middle}'
-			. '.fdm-lien.fdm-lien:hover,.fdm-lien.fdm-lien:focus{color:inherit;opacity:.8}'
+			// En mode « lien », on n'impose NI police NI couleur : c'est le style
+			// du site (ou la classe passée en attribut) qui décide. Hériter du
+			// conteneur serait un piège — dans une tétière bleu nuit, le
+			// conteneur porte justement la couleur du texte sombre.
+			. '.fdm-lien.fdm-lien{line-height:1;text-decoration:none;background:none;'
+			. 'border:0;padding:0;margin:0;display:inline-flex;align-items:center;'
+			. 'vertical-align:middle}'
+			. '.fdm-lien.fdm-lien:hover,.fdm-lien.fdm-lien:focus{text-decoration:none;opacity:.8}'
 			. '.fdm-flottant.fdm-flottant{position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;display:flex;'
 			. 'align-items:baseline;justify-content:center;gap:.5rem;background:#1A76F3;color:#fff;'
 			. 'font-family:Lato,system-ui,sans-serif;text-decoration:none;padding:1rem;border-radius:4px;'
