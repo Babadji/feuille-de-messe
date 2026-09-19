@@ -3,7 +3,7 @@
  * Plugin Name:       Feuille de messe
  * Plugin URI:        https://github.com/Babadji/feuille-de-messe
  * Description:       Convertit la feuille de messe Word déposée en back office en une page mobile lisible, avec un accès rapide le week-end.
- * Version:           0.2.0
+ * Version:           0.2.1
  * Author:            Claire Abadji (+ Claude Code)
  * License:           GPL-2.0-or-later
  * Text Domain:       feuille-de-messe
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FDM_VERSION', '0.2.0' );
+define( 'FDM_VERSION', '0.2.1' );
 define( 'FDM_FILE', __FILE__ );
 define( 'FDM_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FDM_URL', plugin_dir_url( __FILE__ ) );
@@ -32,7 +32,6 @@ require_once FDM_DIR . 'includes/class-fdm-parser.php';
 require_once FDM_DIR . 'includes/class-fdm-render.php';
 require_once FDM_DIR . 'includes/class-fdm-cpt.php';
 require_once FDM_DIR . 'includes/class-fdm-settings.php';
-require_once FDM_DIR . 'includes/class-fdm-liturgie.php';
 require_once FDM_DIR . 'includes/class-fdm-front.php';
 
 if ( is_admin() ) {
@@ -41,7 +40,6 @@ if ( is_admin() ) {
 
 add_action( 'init', array( 'FDM_Cpt', 'register' ), 0 );
 add_action( 'init', array( 'FDM_Front', 'init' ) );
-add_action( 'init', array( 'FDM_Liturgie', 'init' ) );
 
 if ( is_admin() ) {
 	add_action( 'plugins_loaded', array( 'FDM_Admin', 'init' ) );
