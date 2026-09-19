@@ -45,8 +45,13 @@
 	margin-inline: auto;
 	padding-inline: 20px;
 	/* --fdm-entete est posée par feuille.js : hauteur de l'en-tête fixe du
-	   site. Sans elle, le haut de la feuille passe derrière le menu. */
-	padding-top: var(--fdm-entete, 0px);
+	   site. Mais cette mesure échoue dans certains contextes — barre
+	   d'administration repliée sur deux lignes, en-tête posé tardivement par
+	   Elementor — et le titre repasse alors sous le menu. D'où un plancher
+	   garanti : on prend la plus grande des deux valeurs. La mesure ne sert
+	   plus qu'à faire mieux que ce plancher, jamais moins bien. */
+	--fdm-marge-mini: 5rem;
+	padding-top: max(var(--fdm-marge-mini), var(--fdm-entete, 0px));
 	padding-bottom: 3rem;
 }
 

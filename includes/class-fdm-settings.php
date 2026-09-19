@@ -173,6 +173,9 @@ class FDM_Settings {
 
 				<?php submit_button(); ?>
 			</form>
+
+			<hr style="margin:2.5em 0" />
+			<?php FDM_Liturgie::formulaire(); ?>
 		</div>
 		<?php
 	}
