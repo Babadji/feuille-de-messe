@@ -46,8 +46,16 @@ document sans le redéposer.
   C'est elle qu'il faut mettre dans le QR code de l'entrée de l'église et en pied
   de la feuille papier.
 - **Ordinateur** : le code court `[feuille_bouton]` s'insère dans un widget
-  « Code court » d'Elementor, dans l'en-tête. Il affiche la date et disparaît
-  s'il n'y a pas de feuille.
+  « Code court » d'Elementor. Il affiche « Messe du 20 septembre » et disparaît
+  s'il n'y a pas de feuille. Trois attributs : `style="lien"` (pas de pavé
+  bleu), `classe="…"` (rattache à un style existant) et `libelle="Feuille du %s"`
+  (`%s` = la date).
+
+  ⚠️ En mode « lien », la couleur est héritée du conteneur. Dans une barre
+  sombre, cela donne du bleu nuit sur bleu nuit : passez une `classe` qui fixe
+  la couleur. Pour un élément de tétière, le plus simple reste de ne pas
+  utiliser le code court — dupliquez un widget Liste d'icônes et pointez-le
+  vers `/feuille`.
 - **Téléphone** : un bouton flottant apparaît du samedi 16 h au dimanche 20 h
   (réglable). La fenêtre couvre la messe anticipée du samedi soir.
 

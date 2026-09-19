@@ -114,7 +114,9 @@ class FDM_Front {
 	 *           où le lien doit se fondre parmi « Evangile du jour » et « FIP ».
 	 *   classe  classe CSS supplémentaire, pour rattacher le lien à un style
 	 *           déjà défini sur le site plutôt que d'en écrire un nouveau.
-	 *   libelle pour remplacer « Feuille du 20 septembre ».
+	 *   libelle pour remplacer « Messe du 20 septembre ». « %s » y est remplacé
+	 *           par la date courte : libelle="Feuille du %s" donne
+	 *           « Feuille du 20 septembre ».
 	 */
 	public static function shortcode( $atts ) {
 		$post = FDM_Cpt::courante();
@@ -135,13 +137,20 @@ class FDM_Front {
 			$classe .= ' ' . $atts['classe'];
 		}
 
-		$date    = get_post_meta( $post->ID, FDM_Cpt::META_DATE, true );
+		$date  = get_post_meta( $post->ID, FDM_Cpt::META_DATE, true );
+		$ts    = $date ? strtotime( $date ) : 0;
+		$court = $ts ? wp_date( 'j F', $ts ) : '';
+
 		$libelle = $atts['libelle'];
 		if ( '' === $libelle ) {
-			$ts      = $date ? strtotime( $date ) : 0;
-			$libelle = $ts
-				? sprintf( /* translators: date courte */ __( 'Feuille du %s', 'feuille-de-messe' ), wp_date( 'j F', $ts ) )
+			$libelle = $court
+				? sprintf( /* translators: %s : date courte, ex. « 20 septembre » */ __( 'Messe du %s', 'feuille-de-messe' ), $court )
 				: __( 'Feuille de messe', 'feuille-de-messe' );
+		} elseif ( false !== strpos( $libelle, '%s' ) ) {
+			// Gabarit fourni à la main, par exemple libelle="Feuille du %s".
+			// On remplace sans passer par sprintf, qui trébucherait sur un
+			// libellé contenant un « % » ordinaire.
+			$libelle = str_replace( '%s', $court, $libelle );
 		}
 
 		return '<a class="' . esc_attr( $classe ) . '" href="' . esc_url( get_permalink( $post ) ) . '">'

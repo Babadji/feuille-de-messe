@@ -151,11 +151,24 @@ class FDM_Settings {
 					</tr>
 				</table>
 
-				<h2><?php esc_html_e( 'Bouton permanent (ordinateur)', 'feuille-de-messe' ); ?></h2>
-				<p><?php esc_html_e( 'Pour l’en-tête Elementor, déposez un widget « Code court » contenant :', 'feuille-de-messe' ); ?></p>
+				<h2><?php esc_html_e( 'Lien vers la feuille, ailleurs sur le site', 'feuille-de-messe' ); ?></h2>
+				<p><?php esc_html_e( 'Déposez un widget « Code court » contenant :', 'feuille-de-messe' ); ?></p>
 				<p><input type="text" class="regular-text code" readonly value="[feuille_bouton]" onfocus="this.select()" /></p>
-				<p class="description" style="max-width:40em">
-					<?php esc_html_e( 'Le bouton affiche la date de la feuille en ligne et disparaît tout seul s’il n’y en a aucune.', 'feuille-de-messe' ); ?>
+				<p class="description" style="max-width:42em">
+					<?php esc_html_e( 'Il affiche la date de la feuille en ligne et disparaît tout seul s’il n’y en a aucune. Trois attributs :', 'feuille-de-messe' ); ?>
+				</p>
+				<ul class="description" style="max-width:42em;list-style:disc;margin-left:1.5em">
+					<li><code>style="lien"</code> — <?php esc_html_e( 'au lieu du pavé bleu, un lien qui n’impose ni police ni couleur.', 'feuille-de-messe' ); ?></li>
+					<li><code>classe="ma-classe"</code> — <?php esc_html_e( 'rattache le lien à un style déjà défini sur le site.', 'feuille-de-messe' ); ?></li>
+					<li><code>libelle="Feuille du %s"</code> — <?php esc_html_e( '« %s » est remplacé par la date.', 'feuille-de-messe' ); ?></li>
+				</ul>
+				<p class="description" style="max-width:42em">
+					<strong><?php esc_html_e( 'Sur un fond sombre, pensez à la couleur.', 'feuille-de-messe' ); ?></strong>
+					<?php esc_html_e( 'En mode « lien », le texte prend la couleur héritée de son conteneur — dans une barre bleu nuit, ce sera du bleu nuit sur bleu nuit, donc invisible. Passez alors une classe qui fixe la couleur, par exemple :', 'feuille-de-messe' ); ?>
+				</p>
+				<p><input type="text" class="regular-text code" readonly value='[feuille_bouton style="lien" classe="css_nominis"]' onfocus="this.select()" /></p>
+				<p class="description" style="max-width:42em">
+					<?php esc_html_e( 'Pour un élément de tétière aligné sur ses voisins, le plus simple reste souvent de ne pas utiliser le code court : dupliquez un widget Liste d’icônes existant et pointez-le vers l’adresse permanente ci-dessus.', 'feuille-de-messe' ); ?>
 				</p>
 
 				<?php submit_button(); ?>
