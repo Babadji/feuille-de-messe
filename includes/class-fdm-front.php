@@ -17,6 +17,21 @@ class FDM_Front {
 		add_filter( 'the_content', array( __CLASS__, 'contenu' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'assets' ) );
 		add_action( 'wp_footer', array( __CLASS__, 'bouton_weekend' ) );
+
+		// hello-elementor affiche le titre de l'article dans un « .page-header »
+		// au-dessus du contenu. Notre page porte déjà sa date en titre : sans ce
+		// filtre, elle s'affiche deux fois.
+		add_filter( 'hello_elementor_page_title', array( __CLASS__, 'masquer_titre_theme' ) );
+	}
+
+	/**
+	 * Supprime le titre ajouté par le thème, sur les feuilles uniquement.
+	 *
+	 * @param bool $afficher Valeur transmise par hello-elementor.
+	 * @return bool
+	 */
+	public static function masquer_titre_theme( $afficher ) {
+		return is_singular( FDM_Cpt::TYPE ) ? false : $afficher;
 	}
 
 	/**
@@ -185,18 +200,18 @@ class FDM_Front {
 		$fait = true;
 
 		return '<style id="fdm-bouton-css">'
-			. '.fdm-bouton{display:inline-block;background:#1A76F3;color:#fff;font-family:Lato,system-ui,sans-serif;'
+			. '.fdm-bouton.fdm-bouton{display:inline-block;background:#1A76F3;color:#fff;font-family:Lato,system-ui,sans-serif;'
 			. 'font-weight:700;font-size:.8rem;letter-spacing:.64px;text-transform:uppercase;text-decoration:none;'
 			. 'padding:.85rem 1.4rem;border-radius:4px;line-height:1.2}'
-			. '.fdm-bouton:hover,.fdm-bouton:focus{background:#02235F;color:#fff}'
-			. '.fdm-flottant{position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;display:flex;'
+			. '.fdm-bouton.fdm-bouton:hover,.fdm-bouton.fdm-bouton:focus{background:#02235F;color:#fff}'
+			. '.fdm-flottant.fdm-flottant{position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;display:flex;'
 			. 'align-items:baseline;justify-content:center;gap:.5rem;background:#1A76F3;color:#fff;'
 			. 'font-family:Lato,system-ui,sans-serif;text-decoration:none;padding:1rem;border-radius:4px;'
 			. 'box-shadow:0 6px 20px rgba(2,35,95,.28)}'
 			. '.fdm-flottant-titre{font-weight:700;font-size:.85rem;letter-spacing:.64px;text-transform:uppercase}'
 			. '.fdm-flottant-date{font-size:.85rem;opacity:.85}'
-			. '.fdm-flottant[hidden]{display:none}'
-			. '@media (min-width:782px){.fdm-flottant{display:none}}'
+			. '.fdm-flottant.fdm-flottant[hidden]{display:none}'
+			. '@media (min-width:782px){.fdm-flottant.fdm-flottant{display:none}}'
 			. '</style>';
 	}
 }

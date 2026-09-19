@@ -1,6 +1,12 @@
 /*
  * Feuille de messe — habillage public.
  *
+ * Les sélecteurs de liens sont doublés (.fdm-chip.fdm-chip) à dessein : le kit
+ * Elementor du site applique sa typographie via « .elementor-kit-6 a », plus
+ * spécifique qu'une simple classe. Sans ce doublement, les puces et le bouton
+ * héritaient de 20 px, du soulignement et de la couleur du texte courant —
+ * ce qui donnait notamment du bleu nuit sur fond bleu.
+ *
  * Charte Paroisse Carlo Acutis : or #FABC1E, rouge #EA0026, bleu #1A76F3,
  * bleu nuit #02235F, fond pâle #F2F5FC. Titres en Delicious Handrawn,
  * textes en Lato. Le rouge est réservé au don : il ne sert pas ici.
@@ -96,7 +102,7 @@
 .fdm-pistes::-webkit-scrollbar {
 	display: none;
 }
-.fdm-chip {
+.fdm-chip.fdm-chip {
 	flex: 0 0 auto;
 	scroll-snap-align: center;
 	text-decoration: none;
@@ -110,11 +116,11 @@
 	padding: 0.35rem 0.6rem;
 	white-space: nowrap;
 }
-.fdm-chip[aria-current="true"] {
+.fdm-chip.fdm-chip[aria-current="true"] {
 	color: #fff;
 	background: var(--fdm-bleu);
 }
-.fdm-chip:focus-visible {
+.fdm-chip.fdm-chip:focus-visible {
 	outline: 2px solid var(--fdm-bleu);
 	outline-offset: 2px;
 }
@@ -328,7 +334,7 @@
 	padding-top: 1.3rem;
 	border-top: 1px solid var(--fdm-trait);
 }
-.fdm-telecharger {
+.fdm-telecharger.fdm-telecharger {
 	display: inline-block;
 	background: var(--fdm-bleu);
 	color: #fff;
@@ -340,14 +346,14 @@
 	padding: 0.9rem 1.5rem;
 	border-radius: 4px;
 }
-.fdm-telecharger:hover,
-.fdm-telecharger:focus {
+.fdm-telecharger.fdm-telecharger:hover,
+.fdm-telecharger.fdm-telecharger:focus {
 	background: var(--fdm-nuit);
 	color: #fff;
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.fdm-chip {
+	.fdm-chip.fdm-chip {
 		scroll-behavior: auto;
 	}
 }
