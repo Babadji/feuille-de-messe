@@ -86,25 +86,36 @@
 		return !! ( el && el.closest( ENTETE ) && estFixe( el ) );
 	}
 
+	// Un en-tête plus haut que cela n'existe pas en pratique. Ce plafond est
+	// un garde-fou : si la mesure l'atteint, c'est qu'elle mesure autre chose.
+	var PLAFOND = 250;
+
 	function hauteurEntete() {
 		var cx = Math.round( window.innerWidth / 2 );
 		var bas = 0;
 		var y;
 
-		// Balayage grossier, puis affinage au pixel : la mesure est rejouée
-		// plusieurs fois, autant qu'elle reste bon marché.
-		for ( y = 1; y <= 400; y += 8 ) {
-			if ( couvert( cx, y ) ) {
-				bas = y;
+		// Balayage CONTIGU depuis le haut : on s'arrête au premier pixel non
+		// couvert. L'en-tête occupe une bande continue partant du sommet.
+		// Sans cette règle, un panneau de menu déroulant — fixe lui aussi et
+		// rattaché à l'en-tête — faisait croire que l'en-tête occupait tout
+		// l'écran : la barre de repères se posait alors en plein milieu du
+		// texte, à 401 px du haut.
+		for ( y = 1; y <= PLAFOND; y += 8 ) {
+			if ( ! couvert( cx, y ) ) {
+				break;
 			}
+			bas = y;
 		}
-		if ( ! bas ) {
+		if ( ! bas || bas >= PLAFOND ) {
 			return 0;
 		}
+		// Affinage au pixel autour de la limite trouvée.
 		for ( y = bas + 1; y <= bas + 8; y += 1 ) {
-			if ( couvert( cx, y ) ) {
-				bas = y;
+			if ( ! couvert( cx, y ) ) {
+				break;
 			}
+			bas = y;
 		}
 
 		// La barre d'administration est déjà compensée par la marge que
@@ -157,4 +168,38 @@
 		clearTimeout( minuteur );
 		minuteur = setTimeout( appliquer, 150 );
 	} );
+
+	// Deux valeurs distinctes, et c'est volontaire :
+	//
+	// --fdm-entete, mesurée au repos, sert au décalage du haut de la page.
+	// Elle ne doit pas bouger au défilement, sous peine de faire sauter la
+	// mise en page sous les doigts du lecteur.
+	//
+	// --fdm-collant suit l'en-tête en direct et positionne la barre de
+	// repères. Sur ordinateur l'en-tête reste ancré, la barre se cale
+	// dessous ; sur téléphone il s'en va au défilement, et sans ce suivi la
+	// barre resterait suspendue dans le vide à la hauteur qu'il avait au
+	// départ. Le balayage s'arrêtant au premier pixel libre, la mesure ne
+	// coûte qu'une sonde quand il n'y a rien en haut.
+	var collant = null;
+
+	function suivre() {
+		var h = hauteurEntete();
+		if ( h !== collant ) {
+			collant = h;
+			document.documentElement.style.setProperty( '--fdm-collant', h + 'px' );
+		}
+	}
+
+	var enAttente = false;
+	window.addEventListener( 'scroll', function () {
+		if ( enAttente ) {
+			return;
+		}
+		enAttente = true;
+		requestAnimationFrame( function () {
+			enAttente = false;
+			suivre();
+		} );
+	}, { passive: true } );
 }() );

@@ -87,11 +87,14 @@
 /* --- Barre de repères collante --- */
 .fdm-barre {
 	position: sticky;
-	top: var(--fdm-entete, 0px);
+	/* --fdm-collant suit l'en-tête en direct ; --fdm-entete sert de repli
+	   tant que le premier défilement n'a pas eu lieu. */
+	top: var(--fdm-collant, var(--fdm-entete, 0px));
 	z-index: 10;
 	margin-inline: -20px;
-	background: rgba(255, 255, 255, 0.93);
-	backdrop-filter: blur(8px);
+	/* Fond opaque : translucide, le texte qui défile dessous transparaissait
+	   à travers la barre et la rendait illisible. */
+	background: var(--fdm-fond);
 	border-block: 1px solid var(--fdm-trait);
 }
 .fdm-pistes {
