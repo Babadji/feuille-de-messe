@@ -90,24 +90,38 @@
 	// un garde-fou : si la mesure l'atteint, c'est qu'elle mesure autre chose.
 	var PLAFOND = 250;
 
+	// Le balayage doit commencer SOUS la barre d'administration de WordPress :
+	// elle recouvre le haut de l'écran sans appartenir à l'en-tête, si bien
+	// qu'un balayage contigu parti de y = 1 s'arrêtait sur elle et renvoyait
+	// zéro. C'est ce qui laissait le titre sous le menu — uniquement pour les
+	// utilisateurs connectés, et seulement sur grand écran, WordPress masquant
+	// cette barre sur téléphone. Les visiteurs n'ont jamais été concernés.
+	function depart() {
+		var barre = document.getElementById( 'wpadminbar' );
+		if ( ! barre ) {
+			return 1;
+		}
+		var r = barre.getBoundingClientRect();
+		return ( r.top <= 0 && r.bottom > 0 ) ? Math.ceil( r.bottom ) + 1 : 1;
+	}
+
 	function hauteurEntete() {
 		var cx = Math.round( window.innerWidth / 2 );
+		var haut = depart();
 		var bas = 0;
 		var y;
 
-		// Balayage CONTIGU depuis le haut : on s'arrête au premier pixel non
-		// couvert. L'en-tête occupe une bande continue partant du sommet.
-		// Sans cette règle, un panneau de menu déroulant — fixe lui aussi et
-		// rattaché à l'en-tête — faisait croire que l'en-tête occupait tout
-		// l'écran : la barre de repères se posait alors en plein milieu du
-		// texte, à 401 px du haut.
-		for ( y = 1; y <= PLAFOND; y += 8 ) {
+		// Balayage CONTIGU : on s'arrête au premier pixel libre, l'en-tête
+		// occupant une bande continue. Sans cette règle, un panneau de menu
+		// déroulant — fixe lui aussi et rattaché à l'en-tête — faisait croire
+		// que l'en-tête occupait tout l'écran.
+		for ( y = haut; y <= haut + PLAFOND; y += 8 ) {
 			if ( ! couvert( cx, y ) ) {
 				break;
 			}
 			bas = y;
 		}
-		if ( ! bas || bas >= PLAFOND ) {
+		if ( ! bas ) {
 			return 0;
 		}
 		// Affinage au pixel autour de la limite trouvée.
@@ -118,12 +132,13 @@
 			bas = y;
 		}
 
-		// La barre d'administration est déjà compensée par la marge que
-		// WordPress pose sur <html> : la compter deux fois décalerait tout.
-		var barre = document.getElementById( 'wpadminbar' );
-		var admin = barre ? barre.getBoundingClientRect().height : 0;
-		return Math.max( 0, bas + 1 - admin );
+		// On rend l'épaisseur de la bande, pas sa position : ce qui la précède
+		// (la barre d'administration) est déjà compensé par la marge que
+		// WordPress pose sur <html>.
+		var epaisseur = bas - haut + 1;
+		return epaisseur >= PLAFOND ? 0 : epaisseur;
 	}
+
 
 	var dernier = null;
 
