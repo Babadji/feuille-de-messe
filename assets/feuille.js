@@ -100,15 +100,35 @@
 		return bas ? Math.max( 0, bas + 1 - admin ) : 0;
 	}
 
+	var dernier = null;
+
 	function appliquer() {
 		if ( ! document.querySelector( '.fdm-page' ) ) {
 			return;
 		}
-		document.documentElement.style.setProperty( '--fdm-entete', hauteurEntete() + 'px' );
+		var h = hauteurEntete();
+		if ( h !== dernier ) {
+			dernier = h;
+			document.documentElement.style.setProperty( '--fdm-entete', h + 'px' );
+		}
 	}
 
+	// Sur ordinateur, l'en-tête Elementor ne passe en position fixed qu'une
+	// fois son propre script exécuté : une mesure au chargement tombe trop tôt
+	// et renvoie zéro. Sur téléphone il est fixe dès la feuille de style, d'où
+	// un décalage correct d'un côté et absent de l'autre. On repasse donc
+	// plusieurs fois, puis on s'arrête — la valeur ne change plus ensuite.
 	appliquer();
 	window.addEventListener( 'load', appliquer );
+	[ 100, 400, 1000, 2000 ].forEach( function ( delai ) {
+		setTimeout( appliquer, delai );
+	} );
+
+	// Les titres manuscrits peuvent changer la hauteur de l'en-tête au moment
+	// où la police arrive.
+	if ( document.fonts && document.fonts.ready ) {
+		document.fonts.ready.then( appliquer );
+	}
 
 	var minuteur;
 	window.addEventListener( 'resize', function () {
