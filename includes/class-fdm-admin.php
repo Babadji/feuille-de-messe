@@ -204,7 +204,9 @@ class FDM_Admin {
 			return $paragraphes;
 		}
 
-		$doc = FDM_Parser::parse( $paragraphes );
+		// Le nom du fichier sert de dernier recours pour la date, quand le
+		// document n'en porte aucune de reconnaissable.
+		$doc = FDM_Parser::parse( $paragraphes, basename( $chemin ) );
 		if ( is_wp_error( $doc ) ) {
 			return $doc;
 		}

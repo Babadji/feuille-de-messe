@@ -35,10 +35,40 @@ s'appuie sur le vocabulaire liturgique, stable d'une semaine à l'autre.
 - Les annonces deviennent un horaire jour par jour.
 - Refrains, couplets et réponses de l'assemblée sont distingués.
 
-Si la mise en forme du document change un jour, le découpage se dégradera. C'est
-pourquoi le `.docx` reste toujours téléchargeable, que le texte reste modifiable
-dans l'éditeur WordPress, et qu'un bouton **Ré-analyser** permet de repartir du
+## Deux mises en page reconnues
+
+**La feuille ordinaire** se lit de haut en bas : coordonnées, intentions, fêtes,
+annonces, puis une ligne centrée « Paroisse … 19 et 20 septembre 2026 », puis la
+messe.
+
+**La feuille imposée en livret** — celle du 18 octobre 2026 — est dans le
+désordre de l'imprimeur : la *fin* de la messe arrive en premier, puis les infos
+pratiques, puis le titre, puis le *début* de la messe. Son titre ne porte qu'une
+seule date, et les zones de texte de Word y dupliquent ses lignes.
+
+L'analyse ne suppose donc **ni un ordre de lecture, ni un point de coupure
+unique**. Elle classe chaque paragraphe selon ce qu'il annonce — une section
+pratique, un repère liturgique, le titre — puis **remet les blocs de la messe
+dans l'ordre de la célébration**. La date est cherchée partout, et à défaut dans
+le nom du fichier.
+
+Si la mise en forme change encore, le découpage se dégradera. C'est pourquoi le
+`.docx` reste toujours téléchargeable, que le texte reste modifiable dans
+l'éditeur WordPress, et qu'un bouton **Ré-analyser** permet de repartir du
 document sans le redéposer.
+
+## Contrôles
+
+```bash
+php tests/lancer.php                 # les deux mises en page
+php tests/lancer.php une-feuille.docx   # inspecter un vrai document
+```
+
+Les jeux d'essai de `tests/jeux-essai/` sont **fabriqués** par
+`tests/construire-jeux-essai.py`, avec des noms inventés : ce dépôt est public,
+on n'y verse pas de feuille réelle, où figurent les noms des paroissiens portés
+aux intentions. Seule la structure est reproduite — c'est elle qu'il s'agit de
+savoir lire.
 
 ## Accès rapide pour les paroissiens
 
