@@ -100,6 +100,18 @@ $attendus = array(
 		'note_min'  => 0,
 		'fetes_min' => 0,
 	),
+	// Date ordinale « 1er novembre », intentions sans « de messe », et mois
+	// accolé au jour dans les annonces : la feuille de la Toussaint 2026.
+	'date-ordinale.docx'  => array(
+		'date_iso'  => '2026-11-01',
+		'temps'     => 'Solennité de la TOUSSAINT',
+		'jours'     => array( 'Lundi 02', 'Mardi 03', 'Dimanche 08' ),
+		'reperes'   => 18,
+		'premier'   => 'Chant d’entrée',
+		'dernier'   => 'Envoi',
+		'note_min'  => 0,
+		'fetes_min' => 3,
+	),
 );
 
 $echecs = 0;

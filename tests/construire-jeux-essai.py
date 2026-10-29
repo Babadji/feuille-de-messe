@@ -158,7 +158,58 @@ LIVRET = [
     ('1 - Oh, prends mon âme, prends-la, Seigneur', 0),
 ]
 
+# ------------------------------------------------------------- ordinal
+# Mise en page ordinaire, mais trois écarts rencontrés à la Toussaint 2026 :
+# la date est ordinale (« 1er novembre »), les intentions s'annoncent sans
+# « de messe », et les jours d'annonces portent leur mois.
+ORDINAL = [
+    ('', 0), ('Paroisse St Exemple :', 0),
+    ('Mail : paroisse@exemple.fr ; Tél : 00 00 00 00 00', 0),
+    ('site : https://exemple.fr/', 0), ('', 0),
+    ('Intentions :  Défunts familles PREMIÈRE ; SECONDE', 0), ('', 0),
+    ('Fêtes de la semaine : le 02 novembre prière pour les défunts ; '
+     'le 03 novembre St Hubert ; le 04 novembre St Charles', 0), ('', 0),
+    ('Annonces de la semaine', 1), ('', 0),
+    ('Lundi 02 novembre (prière pour les défunts) aux intentions demandées', 0),
+    ('10 h 45 messe au village\t\t18 h 30 messe au bourg', 0),
+    ('Mardi 03\t7h-8h adoration/confession\t11h30 messe', 0),
+    ('Dimanche 08 novembre\t\t9h55 chapelet', 0),
+    ('   10 h 30 messe au bourg pour tous les paroissiens', 0), ('', 0),
+    ('Paroisse St Exemple 1er novembre 2026', 1),
+    ('Solennité de la TOUSSAINT', 1), ('', 0),
+    ('CHANT D’ENTREE : Heureux, bienheureux', 0),
+    ('R. Heureux, bienheureux qui écoute la Parole de Dieu,', 0),
+    ('1. Heureux ceux qui ont une âme de pauvre,', 0),
+    ('PREPARATION PENITENTIELLE : Je confesse à Dieu tout-puissant …', 0),
+    ('Kyrie : (messe St Exemple)', 0),
+    ('Kyrie eleison, kyrie eleison, kyrie eleison.', 0),
+    ('Gloria : (messe St Exemple)', 0),
+    ('Gloria, in excelsis Deo', 0),
+    ('1ère lecture : Livre de l’Apocalypse de St Jean (7, 2-4.9-14)', 0),
+    ('Ps 23 : Voici le peuple de ceux qui cherchent ta face, Seigneur.', 0),
+    ('2ème lecture : 1ère lettre de st Jean (3, 1-3)', 0),
+    ('Acclamation de l’Evangile (st Exemple)', 0),
+    ('Alleluia, alleluia, alleluia, alleluia.', 0),
+    ('Evangile selon Saint Mathieu (5, 1-12a)', 0),
+    ('CREDO : Symbole des Apôtres.', 0),
+    ('P. universelle : Seigneur, entends la prière qui monte de nos cœurs !', 0),
+    ('OFFERTOIRE : orgue … offrons notre vie au Seigneur', 0),
+    ('PRIERE SUR LES OFFRANDES : Le prêtre : Priez, frères et sœurs … ', 0),
+    ('tous : Que le Seigneur reçoive de vos mains ce sacrifice', 0),
+    ('SANCTUS : (messe saint Exemple)', 0),
+    ('Sanctus, sanctus, sanctus Deus sabaoth ! (bis)', 0),
+    ('Anamnèse : Proclamons le mystère de la foi. (samedi : Il est grand …)', 0),
+    ('Gloire à Toi qui était mort, gloire à Toi qui est vivant', 0),
+    ('Agnus Dei (messe saint Exemple)', 0),
+    ('Agnus Dei qui tollis peccata mundi, miserere nobis.', 0),
+    ('COMMUNION : Voici le Corps et le Sang du Seigneur', 0),
+    ('R.Voici le Corps et le Sang du Seigneur,', 0),
+    ('Envoi : Dieu, nous Te louons …', 0),
+    ('R.Dieu, nous te louons, Seigneur, nous t’acclamons', 0),
+]
+
 ici = os.path.dirname(os.path.abspath(__file__))
 docx(os.path.join(ici, 'jeux-essai', 'ancien-format.docx'), ANCIEN)
 docx(os.path.join(ici, 'jeux-essai', 'livret-2026.docx'), LIVRET)
+docx(os.path.join(ici, 'jeux-essai', 'date-ordinale.docx'), ORDINAL)
 print('jeux d’essai écrits dans tests/jeux-essai/')

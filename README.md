@@ -46,6 +46,11 @@ désordre de l'imprimeur : la *fin* de la messe arrive en premier, puis les info
 pratiques, puis le titre, puis le *début* de la messe. Son titre ne porte qu'une
 seule date, et les zones de texte de Word y dupliquent ses lignes.
 
+**Les variantes d'écriture** changent elles aussi d'une semaine à l'autre. La
+date peut être ordinale (« 1er novembre 2026 »), les intentions s'annoncer par
+« Intentions : » sans plus, et les jours d'annonces porter leur mois
+(« Lundi 02 novembre »). Ces trois formes sont acceptées.
+
 L'analyse ne suppose donc **ni un ordre de lecture, ni un point de coupure
 unique**. Elle classe chaque paragraphe selon ce qu'il annonce — une section
 pratique, un repère liturgique, le titre — puis **remet les blocs de la messe

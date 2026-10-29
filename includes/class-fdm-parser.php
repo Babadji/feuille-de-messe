@@ -106,8 +106,12 @@ class FDM_Parser {
 	 * tout le titre plusieurs fois.
 	 */
 	private static function reperer_date( $paragraphes, $nom_fichier ) {
-		$deux = '/(\d{1,2})\s+et\s+(\d{1,2})\s+(' . self::MOIS . ')\s+(\d{4})/ui';
-		$une  = '/(\d{1,2})\s+(' . self::MOIS . ')\s+(\d{4})/ui';
+		// Le français écrit « 1er novembre », « 1re semaine » : le nombre peut
+		// porter un suffixe ordinal collé. Sans cela, la feuille de la Toussaint
+		// 2026 ne livrait aucune date, pas même par son nom de fichier.
+		$ord  = '(?:er|re|ère|ème|è|e|ᵉʳ|ᵉ)?';
+		$deux = '/(\d{1,2})' . $ord . '\s+et\s+(\d{1,2})' . $ord . '\s+(' . self::MOIS . ')\s+(\d{4})/ui';
+		$une  = '/(\d{1,2})' . $ord . '\s+(' . self::MOIS . ')\s+(\d{4})/ui';
 
 		$meilleur = null;
 		foreach ( $paragraphes as $i => $p ) {
@@ -201,7 +205,7 @@ class FDM_Parser {
 
 	/** Le sous-titre : la ligne de la zone de titre qui ne porte pas la date. */
 	private static function temps_liturgique( $paragraphes, $zone, $i_date ) {
-		$une = '/(\d{1,2})\s+(' . self::MOIS . ')\s+(\d{4})/ui';
+		$une = '/(\d{1,2})(?:er|re|ère|ème|è|e|ᵉʳ|ᵉ)?\s+(' . self::MOIS . ')\s+(\d{4})/ui';
 		sort( $zone );
 		$vus = array();
 
@@ -270,7 +274,7 @@ class FDM_Parser {
 			}
 
 			// --- ancres des sections pratiques ---
-			if ( preg_match( '/^intentions de messe\b/ui', $s ) ) {
+			if ( preg_match( '/^intentions\b/ui', $s ) ) {
 				$ctx = 'intentions';
 				$reste = self::apres_deux_points( $s );
 				if ( '' !== $reste ) {
@@ -448,7 +452,10 @@ class FDM_Parser {
 			return '' !== $c;
 		} ) );
 
-		$est_jour  = ( '' !== $tete && preg_match( '/^(' . $jours . ')\b\s*(\d{1,2})?\s*(.*)$/ui', $tete, $m ) );
+		// « Lundi 02 novembre … » : le mois accolé au jour est absorbé, sans quoi
+		// il se retrouverait en tête du libellé de l'office.
+		$est_jour  = ( '' !== $tete && preg_match(
+			'/^(' . $jours . ')\b\s*(\d{1,2})?\s*(?:' . self::MOIS . ')?\s*(.*)$/ui', $tete, $m ) );
 		$est_heure = ( '' !== $tete && preg_match( '/^' . $heure . '/u', $tete ) );
 
 		// Ni jour, ni heure, ni tabulation : on est sorti de l'horaire.

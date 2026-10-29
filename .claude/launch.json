@@ -1,0 +1,41 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "galerie-apercu",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8765",
+        "-d",
+        "/Users/claireabadji/Claude/paroisse-carlo-acutis/galerie"
+      ],
+      "port": 8765
+    },
+    {
+      "name": "maquette-petition-canon",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8766",
+        "-d",
+        "/Users/claireabadji/Claude/petition-canon-francais/maquette"
+      ],
+      "port": 8766
+    },
+    {
+      "name": "board-petition-canon",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8771",
+        "-d",
+        "/Users/claireabadji/Claude/petition-canon-francais"
+      ],
+      "port": 8771
+    }
+  ]
+}
